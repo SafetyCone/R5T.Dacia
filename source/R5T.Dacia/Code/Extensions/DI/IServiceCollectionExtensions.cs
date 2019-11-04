@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 
 namespace R5T.Dacia.Extensions
@@ -19,6 +20,15 @@ namespace R5T.Dacia.Extensions
 
             var output = intermediateServiceProvider.GetRequiredService<T>();
             return output;
+        }
+
+        public static IServiceCollection TryAddSingletonFluent<TService, TImplementation>(this IServiceCollection services)
+            where TImplementation: class, TService
+            where TService: class
+        {
+            services.TryAddSingleton<TService, TImplementation>();
+
+            return services;
         }
     }
 }
