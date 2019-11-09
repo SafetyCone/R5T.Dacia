@@ -42,9 +42,17 @@ namespace R5T.Dacia.Extensions
             return services;
         }
 
+        public static IServiceCollection TryAddSingletonFluent<TService>(this IServiceCollection services)
+            where TService : class
+        {
+            services.TryAddSingleton<TService>();
+
+            return services;
+        }
+
         public static IServiceCollection TryAddSingletonFluent<TService, TImplementation>(this IServiceCollection services)
-            where TImplementation: class, TService
             where TService: class
+            where TImplementation: class, TService
         {
             services.TryAddSingleton<TService, TImplementation>();
 
