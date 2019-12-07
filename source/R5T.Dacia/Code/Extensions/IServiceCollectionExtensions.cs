@@ -3,6 +3,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+using R5T.Dacia.Internals;
+
 
 namespace R5T.Dacia.Extensions
 {
@@ -55,6 +57,31 @@ namespace R5T.Dacia.Extensions
             where TImplementation: class, TService
         {
             services.TryAddSingleton<TService, TImplementation>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Allows separation of code-block for adding multiple services.
+        /// Does not do anything special, just serves to separate code for adding the services for a multiple service.
+        /// </summary>
+        public static IServiceCollection AddMultipleService(this IServiceCollection services, Action<IServiceCollection> action)
+        {
+            action(services);
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds services for a multiple service in a way that allows getting services via <see cref="IServiceProviderExtensions.GetMultipleServices{TService}(IServiceProvider)"/>.
+        /// </summary>
+        public static IServiceCollection AddMultipleServiceSingleton<TService, TImplementation>(this IServiceCollection services)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            services
+                .AddSingleton<TImplementation>()
+                .AddSingleton<IMultipleServiceHolder<TService>, MultipleServiceHolder<TImplementation>>();
 
             return services;
         }

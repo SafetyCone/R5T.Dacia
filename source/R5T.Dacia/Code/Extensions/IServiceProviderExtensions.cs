@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+
+using R5T.Dacia.Internals;
 
 
 namespace R5T.Dacia.Extensions
@@ -22,5 +26,17 @@ namespace R5T.Dacia.Extensions
             var output = serviceProvider.TryGetService<TService>(out _);
             return output;
         }
+
+        /// <summary>
+        /// Gets multiple services added using <see cref="IServiceCollectionExtensions.AddMultipleServiceSingleton{TService, TImplementation}(IServiceCollection)"/>.
+        /// </summary>
+        public static IEnumerable<TService> GetMultipleServices<TService>(this IServiceProvider serviceProvider)
+        {
+            var multipleServiceHolders = serviceProvider.GetServices<IMultipleServiceHolder<TService>>();
+
+            var multipleServices = multipleServiceHolders.Select(x => x.Value).ToArray();
+            return multipleServices;
+        }
     }
+}
 }
