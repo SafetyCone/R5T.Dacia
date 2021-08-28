@@ -1,0 +1,4 @@
+R5T.Dacia.T002 - Service-related attribute types. Attributes for service definitions, implementations, and aggregations.
+
+Goals
+
